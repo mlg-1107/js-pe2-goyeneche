@@ -14,30 +14,27 @@ const cuadros = [
     new Cuadro("L", "25x25 cms", 9500),
     new Cuadro("XL", "27x42 cms", 10000)
 ];
-
-const listarCuadros = () => {
+function listarCuadros() {
     console.log("Cuadros disponibles:");
     cuadros.forEach(cuadro => {
         console.log(`- Tamaño: ${cuadro.tamaño}, Dimensiones: ${cuadro.dimensiones}, Precio Base: $${cuadro.precio}`);
     });
-};
+}
 
-const calcularReventa = (precio) => {
+function calcularReventa(precio) {
     const precioReventa = precio * 1.25;
     console.log(`Precio base: $${precio}, Precio con reventa: $${precioReventa}`);
     return precioReventa;
-};
+}
 
 const calculadorDeReventa = () => {
     console.log("Iniciando calculador de reventa...");
     const saberPrecio = prompt("¿Querés saber a cuánto podés vender nuestros productos? (Sí/No)");
-
     if (saberPrecio.toLowerCase() === "sí" || saberPrecio.toLowerCase() === "si") {
         listarCuadros();
-
         let opciones = "";
-        cuadros.forEach((cuadro, index) => {
-            opciones += `${String.fromCharCode(97 + index)}) ${cuadro.tamaño}: ${cuadro.dimensiones} cms\n`;
+        cuadros.forEach(cuadro => {
+            opciones += `${cuadro.tamaño}: ${cuadro.dimensiones}\n`;
         });
 
         let cuadroSeleccionado = null;
@@ -45,20 +42,15 @@ const calculadorDeReventa = () => {
 
         while (!cuadroSeleccionado && intentosRestantes > 0) {
             const tamañoElegido = prompt(`Elegí el tamaño de tu cuadro (Intentos restantes: ${intentosRestantes}):\n\n${opciones}`);
-
             if (tamañoElegido) {
-                const index = tamañoElegido.toLowerCase().charCodeAt(0) - 97;
-
-                if (index >= 0 && index < cuadros.length) {
-                    cuadroSeleccionado = cuadros[index];
-                } else {
+                cuadroSeleccionado = cuadros.find(cuadro => cuadro.tamaño.toLowerCase() === tamañoElegido.toLowerCase());
+                if (!cuadroSeleccionado) {
                     console.log(`Opción no válida ingresada: ${tamañoElegido}`);
                     alert("Opción no válida. Por favor, elegí entre las opciones disponibles.");
                 }
             } else {
                 alert("No ingresaste ninguna opción. Por favor, volvé a intentarlo.");
             }
-
             intentosRestantes--;
         }
 
@@ -75,8 +67,5 @@ const calculadorDeReventa = () => {
     }
 };
 
-// Aquí el evento se activa correctamente al hacer clic en el botón:
-document.getElementById("calcularPrecioReventa").addEventListener("click", () => {
-    console.log("Botón 'Calcular Precio Reventa' clickeado.");
-    calculadorDeReventa();
-});
+
+
